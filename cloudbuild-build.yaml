@@ -1,7 +1,6 @@
 steps:
   # Build the spring boot package
-  - name: maven:3.8-jdk-11
-    entrypoint: mvn
+  - name: 'gcr.io/cloud-builders/mvn'
     args: ['clean','package','-Dmaven.test.skip=true']
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
