@@ -1,4 +1,13 @@
 steps:
+  # Build the spring boot package
+  - name: 'gcr.io/cloud-builders/mvn'
+    args: ['clean','package','-Dmaven.test.skip=true']
+  # Build the container image
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/meme-backend:$COMMIT_SHA', '.']
+  # Push the container image to Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/meme-backend:$COMMIT_SHA']
   # Deploy container image to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
