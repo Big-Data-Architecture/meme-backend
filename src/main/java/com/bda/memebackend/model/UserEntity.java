@@ -10,11 +10,11 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user", schema = "public", catalog = "users")
+@Table(name = "users", schema = "public", catalog = "users")
 public class UserEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
-  @Column(name = "id")
+  @Column(name = "user_id")
   private int id;
   @Basic
   @Column(name = "username")
