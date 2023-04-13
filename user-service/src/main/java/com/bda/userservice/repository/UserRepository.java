@@ -1,9 +1,10 @@
-package com.bda.memebackend.repository;
+package com.bda.userservice.repository;
 
-import com.bda.memebackend.model.UserEntity;
+import com.bda.userservice.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
+    UserEntity findUserEntityByUsername(String username);
 }

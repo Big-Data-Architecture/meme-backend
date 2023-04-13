@@ -3,7 +3,7 @@ FROM openjdk:11-slim as build
 
 WORKDIR application
 
-ARG JAR_FILE=target/*.jar
+ARG JAR_FILE=./target/*.jar
 
 COPY ${JAR_FILE} application.jar
 

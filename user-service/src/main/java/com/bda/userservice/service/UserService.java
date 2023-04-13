@@ -1,7 +1,8 @@
-package com.bda.memebackend.service;
+package com.bda.userservice.service;
 
-import com.bda.memebackend.model.UserEntity;
-import com.bda.memebackend.repository.UserRepository;
+import com.bda.userservice.dto.UserEntityDto;
+import com.bda.userservice.model.UserEntity;
+import com.bda.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ public class UserService {
   @Autowired
   UserRepository userRepository;
 
-  public UserEntity createUser(UserEntity user) {
+  public UserEntity createUser(UserEntityDto user) {
     UserEntity newUser = new UserEntity();
     newUser.setUsername(user.getUsername());
     newUser.setPassword(user.getPassword());
@@ -27,4 +28,6 @@ public class UserService {
   public Optional<UserEntity> getUser(Integer userId) {
     return userRepository.findById(userId);
   }
+
+  public UserEntity getUserByName(String username){return userRepository.findUserEntityByUsername(username);}
 }
