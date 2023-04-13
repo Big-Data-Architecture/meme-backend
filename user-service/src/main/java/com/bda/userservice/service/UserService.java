@@ -28,4 +28,6 @@ public class UserService {
   public Optional<UserEntity> getUser(Integer userId) {
     return userRepository.findById(userId);
   }
+
+  public UserEntity getUserByName(String username){return userRepository.findUserEntityByUsername(username);}
 }

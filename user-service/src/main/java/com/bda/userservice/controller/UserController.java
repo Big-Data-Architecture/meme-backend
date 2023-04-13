@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -15,6 +16,21 @@ import java.util.Optional;
 public class UserController {
   @Autowired
   UserService userService;
+
+  @PostMapping(value="/signup")
+  public ResponseEntity<UserEntity> signup(@RequestBody UserEntityDto user){
+    return this.createUser(user);
+  }
+
+  @PostMapping(value="/login")
+  public ResponseEntity<UserEntity> login(@RequestBody UserEntityDto user){
+    UserEntity userEntity = userService.getUserByName(user.getUsername());
+    if(!Objects.isNull(userEntity) && userEntity.getPassword().equals(user.getPassword())){
+        return ResponseEntity.ok(userEntity);
+    }else{
+        return ResponseEntity.badRequest().body(userEntity);
+    }
+  }
 
   @PostMapping(value = "/users")
   public ResponseEntity<UserEntity> createUser(@RequestBody UserEntityDto user) {
