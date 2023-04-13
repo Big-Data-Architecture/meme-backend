@@ -1,4 +1,4 @@
-package com.bda.memebackend.model;
+package com.bda.userservice.model;
 
 import lombok.*;
 

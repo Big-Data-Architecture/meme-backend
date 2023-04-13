@@ -4,6 +4,6 @@ steps:
     args: ['clean','package','-Dmaven.test.skip=true']
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/meme-backend:$COMMIT_SHA', '.']
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/meme-backend:$COMMIT_SHA', './user-service']
 images:
   - 'gcr.io/$PROJECT_ID/meme-backend:$COMMIT_SHA'
