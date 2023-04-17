@@ -4,6 +4,7 @@ import com.bda.userservice.dto.UserEntityDto;
 import com.bda.userservice.model.UserEntity;
 import com.bda.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserController {
     if(!Objects.isNull(userEntity) && userEntity.getPassword().equals(user.getPassword())){
         return ResponseEntity.ok(userEntity);
     }else{
-        return ResponseEntity.badRequest().body(userEntity);
+        return new ResponseEntity<>(new UserEntity(), HttpStatus.UNAUTHORIZED);
     }
   }
 
