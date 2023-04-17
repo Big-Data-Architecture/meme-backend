@@ -10,20 +10,19 @@ import co.elastic.clients.elasticsearch.core.KnnSearchResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.knn_search.KnnSearchQuery;
-import co.elastic.clients.elasticsearch.core.search.Hit;
 import co.elastic.clients.elasticsearch.ml.GetTrainedModelsStatsResponse;
 import co.elastic.clients.elasticsearch.ml.InferTrainedModelRequest;
 import co.elastic.clients.elasticsearch.ml.InferTrainedModelResponse;
 import co.elastic.clients.json.JsonData;
-import co.elastic.clients.json.JsonpMapper;
 import com.bda.userservice.ElasticConfig;
-import jakarta.json.stream.JsonGenerator;
+import com.bda.userservice.model.MemeEntity;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -69,8 +68,8 @@ public class ElasticService {
                                         .order(SortOrder.Desc))
                         )
         );
-        SearchResponse<Object> response = client.search(request, Object.class);
-        return response.hits().hits().toString();
+        SearchResponse<MemeEntity> response = client.search(request, MemeEntity.class);
+        return getJsonString(response);
     }
 
     public String searchRandom() throws IOException {
@@ -87,8 +86,8 @@ public class ElasticService {
                                 }
                         ).size(1)
         );
-        SearchResponse<Void> response = client.search(request, Void.class);
-        return response.hits().hits().toString();
+        SearchResponse<MemeEntity> response = client.search(request, MemeEntity.class);
+        return getJsonString(response);
     }
 
     private List<Float> inferTrainedModel(String query) throws IOException {
@@ -110,8 +109,16 @@ public class ElasticService {
         KnnSearchRequest request = KnnSearchRequest.of(
                 r -> r.index(INDEX).knn(query).fields(Arrays.asList(sourceFields)).source(s -> s.fetch(true))
         );
-        KnnSearchResponse<Void> response = client.knnSearch(request, Void.class);
-        return response.hits().hits().toString();
+        KnnSearchResponse<MemeEntity> response = client.knnSearch(request, MemeEntity.class);
+        List<MemeEntity> list = response.hits().hits().stream().map(
+                it -> {
+                    MemeEntity temp = it.source();
+                    temp.setId(it.id());
+                    return temp;
+                }
+        ).collect(Collectors.toList());
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(list);
     }
 
     public String getMemesByIds(List<String> ids) throws IOException {
@@ -127,8 +134,8 @@ public class ElasticService {
                                 }
                         )
         );
-        SearchResponse<Void> response = client.search(request, Void.class);
-        return response.hits().hits().toString();
+        SearchResponse<MemeEntity> response = client.search(request, MemeEntity.class);
+        return getJsonString(response);
     }
 
     public boolean isModelUpAndRunning() throws IOException {
@@ -136,15 +143,15 @@ public class ElasticService {
         return response.trainedModelStats().get(0).deploymentStats() != null;
     }
 
-    public String getJsonString(List<Hit<Void>> hits) {
-        JsonpMapper mapper = client._jsonpMapper();
-        StringWriter writer = new StringWriter();
-        try (JsonGenerator generator = mapper.jsonProvider().createGenerator(writer)) {
-            mapper.serialize(hits, generator);
-            hits.stream().forEach(
-                    hit -> mapper.serialize(hits, generator)
-            );
-        }
-        return writer.toString();
+    public String getJsonString(SearchResponse<MemeEntity> response) throws JsonProcessingException {
+        List<MemeEntity> list = response.hits().hits().stream().map(
+                it -> {
+                    MemeEntity temp = it.source();
+                    temp.setId(it.id());
+                    return temp;
+                }
+        ).collect(Collectors.toList());
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(list);
     }
 }
