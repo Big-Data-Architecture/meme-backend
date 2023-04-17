@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -23,18 +22,13 @@ public class ElasticController {
     private final Logger logger = LoggerFactory.getLogger(ElasticController.class.getSimpleName());
 
     @GetMapping("/memes/")
-    public ResponseEntity<String> searchMemes(@RequestParam(value = "query", required = true) String query, @RequestParam(value = "type") String type) {
+    public ResponseEntity<String> searchMemes(@RequestParam(value = "query", required = true) String query, @RequestParam(value = "type", required = false) String type) {
         if (query.isBlank()) return ResponseEntity.badRequest().build();
 
         try {
-            boolean isModelUp = elasticService.isModelUpAndRunning();
             String responseBody = "";
             if (type.equals("ml")) {
-                if (isModelUp) {
-                    responseBody = elasticService.knnSearch(query);
-                } else {
-                    throw new IOException("Model is not up");
-                }
+                responseBody = elasticService.knnSearch(query);
             } else {
                 responseBody = elasticService.generalSearch(query);
             }
