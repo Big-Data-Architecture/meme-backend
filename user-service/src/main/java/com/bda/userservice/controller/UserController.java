@@ -1,6 +1,7 @@
 package com.bda.userservice.controller;
 
 import com.bda.userservice.dto.UserEntityDto;
+import com.bda.userservice.exception.UserExistsException;
 import com.bda.userservice.model.UserEntity;
 import com.bda.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,11 @@ public class UserController {
 
   @PostMapping(value = "/users")
   public ResponseEntity<UserEntity> createUser(@RequestBody UserEntityDto user) {
-    return ResponseEntity.ok(userService.createUser(user));
+    try{
+      return ResponseEntity.ok(userService.createUser(user));
+    }catch(UserExistsException e){
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
   }
 
   @GetMapping(value = "/users")

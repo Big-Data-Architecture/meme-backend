@@ -11,4 +11,6 @@ import java.io.Serializable;
 public class UserEntityDto implements Serializable {
     private final String username;
     private final String password;
+    private final String firstname;
+    private final String lastname;
 }
