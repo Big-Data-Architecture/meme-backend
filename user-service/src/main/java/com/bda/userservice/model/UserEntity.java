@@ -10,7 +10,9 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@Builder
 @Table(name = "users", schema = "public", catalog = "users")
+@AllArgsConstructor
 public class UserEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
