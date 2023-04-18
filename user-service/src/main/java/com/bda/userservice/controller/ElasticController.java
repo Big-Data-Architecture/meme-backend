@@ -22,7 +22,8 @@ public class ElasticController {
     private final Logger logger = LoggerFactory.getLogger(ElasticController.class.getSimpleName());
 
     @GetMapping("/memes/")
-    public ResponseEntity<String> searchMemes(@RequestParam(value = "query", required = true) String query, @RequestParam(value = "type", required = false) String type) {
+    public ResponseEntity<String> searchMemes(@RequestParam(value = "query", required = true) String query,
+                                              @RequestParam(value = "type", required = false, defaultValue = "gen") String type) {
         if (query.isBlank()) return ResponseEntity.badRequest().build();
 
         try {
