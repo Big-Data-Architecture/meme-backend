@@ -1,4 +1,4 @@
-package com.bda.userservice.model;
+package com.bda.elasticservice.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

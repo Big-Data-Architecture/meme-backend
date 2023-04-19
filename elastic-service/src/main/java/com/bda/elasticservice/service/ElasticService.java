@@ -1,4 +1,4 @@
-package com.bda.userservice.service;
+package com.bda.elasticservice.service;
 
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
@@ -14,8 +14,8 @@ import co.elastic.clients.elasticsearch.ml.GetTrainedModelsStatsResponse;
 import co.elastic.clients.elasticsearch.ml.InferTrainedModelRequest;
 import co.elastic.clients.elasticsearch.ml.InferTrainedModelResponse;
 import co.elastic.clients.json.JsonData;
-import com.bda.userservice.ElasticConfig;
-import com.bda.userservice.model.MemeEntity;
+import com.bda.elasticservice.ElasticConfig;
+import com.bda.elasticservice.model.MemeEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;

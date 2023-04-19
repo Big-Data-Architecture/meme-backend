@@ -13,7 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <artifactId>meme-backend-parent</artifactId>
     <packaging>pom</packaging>
-    <name>meme-backend-parent-pom</name>
+    <name>Meme Backend Parent</name>
     <description>Parent Pom for the meme-backend project</description>
 
     <properties>
@@ -22,7 +22,10 @@
     </properties>
 
     <modules>
+        <module>config-server</module>
+        <module>eureka-server</module>
         <module>user-service</module>
+        <module>elastic-service</module>
     </modules>
     <build>
         <plugins>
