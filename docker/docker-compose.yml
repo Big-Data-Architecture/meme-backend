@@ -1,0 +1,50 @@
+version: '2.1'
+services:
+  configserver:
+    image: us-central1-docker.pkg.dev/big-data-architecture-202303/meme-backend/config-server:latest
+    ports:
+      - "8071:8071"
+    networks:
+      backend:
+        aliases:
+          - "configserver"
+  eurekaserver:
+    image: us-central1-docker.pkg.dev/big-data-architecture-202303/meme-backend/eureka-server:latest
+    ports:
+      - "8070:8070"
+    depends_on:
+      configserver:
+        condition: service_started
+    networks:
+      backend:
+        aliases:
+          - "eurekaserver"
+  userservice:
+    image: us-central1-docker.pkg.dev/big-data-architecture-202303/meme-backend/user-service:latest
+    environment:
+      PROFILE: "dev"
+      CONFIGSERVER_URI: "http://localhost:8071"
+      CONFIGSERVER_PORT:   "8071"
+    depends_on:
+      configserver:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - backend
+  elasticservice:
+    image: us-central1-docker.pkg.dev/big-data-architecture-202303/meme-backend/elastic-service:latest
+    environment:
+      PROFILE: "dev"
+      CONFIGSERVER_URI: "http://localhost:8071"
+      CONFIGSERVER_PORT:   "8071"
+    depends_on:
+      configserver:
+        condition: service_started
+    ports:
+      - "8081:8081"
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge

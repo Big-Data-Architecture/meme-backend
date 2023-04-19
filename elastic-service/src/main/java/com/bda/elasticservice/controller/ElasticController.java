@@ -1,6 +1,6 @@
-package com.bda.userservice.controller;
+package com.bda.elasticservice.controller;
 
-import com.bda.userservice.service.ElasticService;
+import com.bda.elasticservice.service.ElasticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

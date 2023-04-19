@@ -1,4 +1,4 @@
-package com.bda.userservice;
+package com.bda.elasticservice;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
