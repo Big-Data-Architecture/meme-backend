@@ -13,7 +13,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and().authorizeRequests().antMatchers("/api/**").permitAll()
+                .cors().and().csrf().disable().authorizeRequests().antMatchers("/api/**").permitAll()
                 .anyRequest().permitAll()
                 .and().httpBasic();
         return http.build();
