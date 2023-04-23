@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", exposedHeaders = {"Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"}, allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.OPTIONS,RequestMethod.POST,RequestMethod.HEAD})
 @RequestMapping("/api/v1")
 public class FavouritesController {
 

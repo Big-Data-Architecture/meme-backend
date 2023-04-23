@@ -14,6 +14,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin(originPatterns = "*", allowCredentials = "true", exposedHeaders = {"Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"}, allowedHeaders = "*", methods = {RequestMethod.GET,RequestMethod.OPTIONS,RequestMethod.POST,RequestMethod.HEAD})
 @RequestMapping("/api/v1")
 public class UserController {
   @Autowired
