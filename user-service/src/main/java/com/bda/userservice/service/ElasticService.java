@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class ElasticService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable("generalSearch")
     public String generalSearch(String searchQuery) throws IOException {
         Query query = new Query.Builder()
                 .combinedFields(
@@ -72,6 +74,7 @@ public class ElasticService {
         return getJsonString(response);
     }
 
+    @Cacheable("searchRandom")
     public String searchRandom() throws IOException {
         String dateSeed = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         Query query = new Query.Builder().functionScore(
@@ -98,6 +101,7 @@ public class ElasticService {
         return response.inferenceResults().get(0).predictedValue().stream().map(fieldValue -> (float) fieldValue.doubleValue()).collect(Collectors.toList());
     }
 
+    @Cacheable("knnSearch")
     public String knnSearch(String queryText) throws IOException {
         List<Float> embedding = inferTrainedModel(queryText);
         KnnSearchQuery query = new KnnSearchQuery.Builder()

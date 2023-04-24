@@ -7,6 +7,7 @@ import com.bda.userservice.model.FavouritesEntity;
 import com.bda.userservice.model.FavouritesEntityPK;
 import com.bda.userservice.repository.FavouritesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,6 +45,7 @@ public class FavouritesService {
         }
     }
 
+    @Cacheable("getFavourites")
     public UserFavouritesDto getFavourites(Integer userId) {
         return UserFavouritesDto
                 .builder()
@@ -56,6 +58,7 @@ public class FavouritesService {
                 .build();
     }
 
+    @Cacheable("isFavourites")
     public IsFavouritesEntityDto isFavourite(Integer userId, String memeId) {
         return IsFavouritesEntityDto
                 .builder()
