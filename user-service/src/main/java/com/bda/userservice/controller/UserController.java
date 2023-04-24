@@ -5,6 +5,7 @@ import com.bda.userservice.exception.UserExistsException;
 import com.bda.userservice.model.UserEntity;
 import com.bda.userservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,9 @@ import java.util.Optional;
 public class UserController {
   @Autowired
   UserService userService;
+
+  @Autowired
+  CacheManager cacheManager;
 
   @PostMapping(value="/signup")
   public ResponseEntity<UserEntity> signup(@RequestBody UserEntityDto user){
@@ -52,5 +56,11 @@ public class UserController {
   @GetMapping(value = "/users/{userId}")
   public ResponseEntity<Optional<UserEntity>> getUser(@PathVariable Integer userId) {
     return ResponseEntity.ok(userService.getUser(userId));
+  }
+
+  @GetMapping(value = "/clearcache")
+  public void evictAllCaches(){
+    cacheManager.getCacheNames()
+            .forEach(cacheName -> Objects.requireNonNull(cacheManager.getCache(cacheName)).clear());
   }
 }

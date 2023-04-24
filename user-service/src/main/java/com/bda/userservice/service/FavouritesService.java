@@ -7,6 +7,7 @@ import com.bda.userservice.model.FavouritesEntity;
 import com.bda.userservice.model.FavouritesEntityPK;
 import com.bda.userservice.repository.FavouritesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class FavouritesService {
     @Autowired
     FavouritesRepository favouritesRepository;
 
+    @CacheEvict(value = {"getFavourites","isFavourites"},allEntries = true)
     public IsFavouritesEntityDto toggleFavourites(FavouritesEntityDto favouritesEntityDto) {
         if (favouriteExists(favouritesEntityDto.getUserId(), favouritesEntityDto.getMemeId())) {
             favouritesRepository
