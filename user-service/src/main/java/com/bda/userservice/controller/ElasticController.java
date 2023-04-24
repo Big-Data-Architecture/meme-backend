@@ -4,6 +4,7 @@ import com.bda.userservice.service.ElasticService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ public class ElasticController {
     private final Logger logger = LoggerFactory.getLogger(ElasticController.class.getSimpleName());
 
     @GetMapping("/memes/")
+    @Cacheable("searchMeme")
     public ResponseEntity<String> searchMemes(@RequestParam(value = "query", required = true) String query,
                                               @RequestParam(value = "type", required = false, defaultValue = "gen") String type) {
         if (query.isBlank()) return ResponseEntity.badRequest().build();
@@ -40,6 +42,7 @@ public class ElasticController {
     }
 
     @GetMapping("/meme_of_the_day")
+    @Cacheable("memeoftheday")
     public ResponseEntity<String> getMemeOfTheDay() {
         try {
             String response = elasticService.searchRandom();
@@ -52,6 +55,7 @@ public class ElasticController {
     }
 
     @GetMapping("/meme_info/")
+    @Cacheable("memeid")
     public ResponseEntity<String> getMemeByIds(@RequestParam("ids") List<String> ids) {
         try {
             String response = elasticService.getMemesByIds(ids);
